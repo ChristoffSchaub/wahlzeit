@@ -22,7 +22,7 @@ public class Coordinate {
     }
 
     public boolean isEqual(Coordinate coordinate) {
-        double threshold=0.000001;
+        double threshold = 0.000001;
 
         if (coordinate == null) {
             return false;
@@ -32,9 +32,9 @@ public class Coordinate {
             return true;
         }
 
-        boolean eqX = Math.abs(coordinate.getX() - this.getX())>threshold?true:false;
-        boolean eqY = Math.abs(coordinate.getY() - this.getY())>threshold?true:false;
-        boolean eqZ = Math.abs(coordinate.getZ() - this.getZ())>threshold?true:false;
+        boolean eqX = Math.abs(coordinate.getX() - this.getX()) < threshold ? true : false;
+        boolean eqY = Math.abs(coordinate.getY() - this.getY()) < threshold ? true : false;
+        boolean eqZ = Math.abs(coordinate.getZ() - this.getZ()) < threshold ? true : false;
 
         return eqX && eqY && eqZ;
     }
@@ -42,6 +42,14 @@ public class Coordinate {
     @Override
     public int hashCode() {
         return Objects.hash(getX(), getY(), getZ());
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Coordinate)
+            return this.isEqual((Coordinate) o);
+        return false;
     }
 
     public double getX() {
@@ -66,12 +74,5 @@ public class Coordinate {
 
     public void setZ(double z) {
         this.z = z;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof Coordinate)
-            return this.isEqual((Coordinate) o);
-        return false;
     }
 }

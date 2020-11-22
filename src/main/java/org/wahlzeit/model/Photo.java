@@ -189,7 +189,7 @@ public class Photo extends DataObject {
         rset.updateInt("praise_sum", praiseSum);
         rset.updateInt("no_votes", noVotes);
         rset.updateLong("creation_time", creationTime);
-        rset.updateObject("location", Location.serializeAsString(location));
+        rset.updateString("location", Location.serializeAsString(location));
     }
 
     /**

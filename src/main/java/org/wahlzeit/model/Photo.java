@@ -105,7 +105,6 @@ public class Photo extends DataObject {
     protected long creationTime = System.currentTimeMillis();
 
 
-
     /**
      *
      */
@@ -168,6 +167,8 @@ public class Photo extends DataObject {
         creationTime = rset.getLong("creation_time");
 
         maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
+
+        location = new Location(rset.getString("location"));
     }
 
     /**
@@ -188,6 +189,7 @@ public class Photo extends DataObject {
         rset.updateInt("praise_sum", praiseSum);
         rset.updateInt("no_votes", noVotes);
         rset.updateLong("creation_time", creationTime);
+        rset.updateObject("location", Location.serializeAsString(location));
     }
 
     /**

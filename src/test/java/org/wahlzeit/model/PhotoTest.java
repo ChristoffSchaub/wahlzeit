@@ -3,7 +3,6 @@ package org.wahlzeit.model;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.wahlzeit.services.EmailAddress;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +22,7 @@ public class PhotoTest {
         //Act
         photo.readFrom(resultSet);
         //Assert
-        Assert.assertTrue(photo.location.getCoordinate().equals(new Coordinate(1.0, 2.0, 3.0)));
+        Assert.assertTrue(photo.location.getCartesianCoordinate().equals(new CartesianCoordinate(1.0, 2.0, 3.0)));
 
 
     }
@@ -31,7 +30,7 @@ public class PhotoTest {
     @Test
     public void writeOn() throws SQLException {
         //Arrrange
-        Location location = new Location(new Coordinate(1.0, 2.0, 3.0));
+        Location location = new Location(new CartesianCoordinate(1.0, 2.0, 3.0));
         //Act
         resultSet.updateString("location", Location.serializeAsString(location));
 

@@ -1,16 +1,21 @@
 package org.wahlzeit.model;
 
-import java.text.ParseException;
-
 public class Location {
 
     protected Coordinate coordinate;
 
-    public Location(Coordinate coordinate) {
-        if (coordinate == null) {
+    public Location(CartesianCoordinate cartesianCoordinate) {
+        if (cartesianCoordinate == null) {
             throw new IllegalArgumentException("Coordinate must not be null");
         } else {
-            this.coordinate = coordinate;
+            this.coordinate = cartesianCoordinate;
+        }
+    }
+    public Location(SphericCoordinate sphericCoordinate) {
+        if (sphericCoordinate == null) {
+            throw new IllegalArgumentException("Coordinate must not be null");
+        } else {
+            this.coordinate = sphericCoordinate;
         }
     }
 
@@ -23,14 +28,14 @@ public class Location {
         if (l == null)
             return "";
 
-        String x = String.valueOf(l.coordinate.getX());
-        String y = String.valueOf(l.coordinate.getY());
-        String z = String.valueOf(l.coordinate.getZ());
+        String x = String.valueOf(l.coordinate.asCartesianCoordinate().getX());
+        String y = String.valueOf(l.coordinate.asCartesianCoordinate().getY());
+        String z = String.valueOf(l.coordinate.asCartesianCoordinate().getZ());
 
         return x + "," + y + "," + z;
     }
 
-    public static Coordinate deserializeCoordinateFromLocationString(String locationAsString) {
+    public static CartesianCoordinate deserializeCoordinateFromLocationString(String locationAsString) {
         //String is serialized with the scheme of the Method serializeAsString()
         if (locationAsString == null)
             throw new IllegalArgumentException("locationAsString must not be null");
@@ -49,19 +54,30 @@ public class Location {
             x = Double.parseDouble(coordinates[0]);
             y = Double.parseDouble(coordinates[1]);
             z = Double.parseDouble(coordinates[2]);
-            return new Coordinate(x, y, z);
+            return new CartesianCoordinate(x, y, z);
         } catch (NumberFormatException exception) {
             throw new IllegalArgumentException("locationAsString must be in Format x,y,z where x,y,z are doubles of coordinates");
         }
     }
-
-    public Coordinate getCoordinate() {
-        return coordinate;
+    public static SphericCoordinate deserializeCoordinateFromLocationStringToSphericCoordinate(String locationAsString) {
+        return deserializeCoordinateFromLocationString(locationAsString).asSphericCoordinate();
     }
 
-    public void setCoordinate(Coordinate coordinate) {
-        if (coordinate == null)
+    public CartesianCoordinate getCartesianCoordinate() {
+        return coordinate.asCartesianCoordinate();
+    }
+    public SphericCoordinate getSphericCoorinate() {
+        return coordinate.asSphericCoordinate();
+    }
+
+    public void setCartesianCoordinate(CartesianCoordinate cartesianCoordinate) {
+        if (cartesianCoordinate == null)
             throw new IllegalArgumentException("coordinate must not be null");
-        this.coordinate = coordinate;
+        this.coordinate = cartesianCoordinate;
+    }
+    public void setSphericCoordinate(SphericCoordinate sphericCoordinate) {
+        if (sphericCoordinate == null)
+            throw new IllegalArgumentException("coordinate must not be null");
+        this.coordinate = sphericCoordinate;
     }
 }

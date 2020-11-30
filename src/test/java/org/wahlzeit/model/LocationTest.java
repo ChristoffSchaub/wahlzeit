@@ -3,15 +3,13 @@ package org.wahlzeit.model;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class LocationTest {
 
     @Test
     public void serializeAsString() {
         //Arrange
-        Coordinate coordinate = new Coordinate(100.0, 200.0, 300.0);
-        Location location = new Location(coordinate);
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(100.0, 200.0, 300.0);
+        Location location = new Location(cartesianCoordinate);
         String expectedValue = "100.0,200.0,300.0";
         //Act
         String actualValue = Location.serializeAsString(location);
@@ -34,11 +32,11 @@ public class LocationTest {
     public void deserializeCoordinateFromLocationString() {
         //Arrange
         String locationString = "100.0,200.0,300.0";
-        Coordinate coordinate = new Coordinate(100.0, 200.0, 300.0);
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(100.0, 200.0, 300.0);
         //Act
-        Coordinate actualCoordinate = Location.deserializeCoordinateFromLocationString(locationString);
+        CartesianCoordinate actualCartesianCoordinate = Location.deserializeCoordinateFromLocationString(locationString);
         //Assert
-        Assert.assertTrue(coordinate.equals(actualCoordinate));
+        Assert.assertTrue(cartesianCoordinate.equals(actualCartesianCoordinate));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -46,7 +44,7 @@ public class LocationTest {
         //Arrange
         String locationString = null;
         //Act
-        Coordinate actualCoordinate = Location.deserializeCoordinateFromLocationString(locationString);
+        CartesianCoordinate actualCartesianCoordinate = Location.deserializeCoordinateFromLocationString(locationString);
     }
 
     @Test()
@@ -54,9 +52,9 @@ public class LocationTest {
         //Arrange
         String locationString = "";
         //Act
-        Coordinate actualCoordinate = Location.deserializeCoordinateFromLocationString(locationString);
+        CartesianCoordinate actualCartesianCoordinate = Location.deserializeCoordinateFromLocationString(locationString);
         //Assert
-        Assert.assertTrue(actualCoordinate == null);
+        Assert.assertTrue(actualCartesianCoordinate == null);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -73,6 +71,20 @@ public class LocationTest {
         String locationString = "100.0,200.0,X.0";
         //Act
         Location.deserializeCoordinateFromLocationString(locationString);
+    }
+
+    @Test
+    public void deserializeLocationWithSphericCoordinate() {
+        //Arrange
+        String locationString = "100.0,200.0,300.0";
+        //Act
+        Location.deserializeCoordinateFromLocationStringToSphericCoordinate(locationString);
+    }
+    @Test
+    public void createLocationWithSphericCoordinate() {
+        //Arrange
+        Location sphericLocation = new Location(new SphericCoordinate(1,1,1));
+
     }
 
 

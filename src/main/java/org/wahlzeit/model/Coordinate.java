@@ -1,78 +1,15 @@
 package org.wahlzeit.model;
 
-import java.util.Objects;
+public interface Coordinate {
 
-public class Coordinate {
+    CartesianCoordinate asCartesianCoordinate();
 
-    private double x;
-    private double y;
-    private double z;
+    double getCartesianDistance(Coordinate coordinate) throws NullPointerException;
 
-    public Coordinate(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
+    SphericCoordinate asSphericCoordinate();
 
+    double getCentralAngle(Coordinate coordinate);
 
-    public double getDistance(Coordinate coordinate) throws NullPointerException {
-        if (coordinate == null)
-            throw new NullPointerException("coordinate can not be null");
-        return Math.sqrt(Math.pow(coordinate.getX() - this.getX(), 2) + Math.pow(coordinate.getY() - this.getY(), 2) + Math.pow(coordinate.getZ() - this.getZ(), 2));
-    }
+    boolean isEqual(Coordinate coordinate);
 
-    public boolean isEqual(Coordinate coordinate) {
-        double threshold = 0.000001;
-
-        if (coordinate == null) {
-            return false;
-        }
-
-        if (this == coordinate) {
-            return true;
-        }
-
-        boolean eqX = Math.abs(coordinate.getX() - this.getX()) < threshold ? true : false;
-        boolean eqY = Math.abs(coordinate.getY() - this.getY()) < threshold ? true : false;
-        boolean eqZ = Math.abs(coordinate.getZ() - this.getZ()) < threshold ? true : false;
-
-        return eqX && eqY && eqZ;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getX(), getY(), getZ());
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof Coordinate)
-            return this.isEqual((Coordinate) o);
-        return false;
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getZ() {
-        return z;
-    }
-
-    public void setZ(double z) {
-        this.z = z;
-    }
 }

@@ -1,11 +1,26 @@
 package org.wahlzeit.model;
 
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Assert;
 import org.junit.Test;
+import org.wahlzeit.model.coordinate.AbstractCoordinate;
+import org.wahlzeit.model.coordinate.CartesianCoordinate;
+import org.wahlzeit.model.coordinate.Coordinate;
+import org.wahlzeit.model.coordinate.SphericCoordinate;
 
 public class CartesianCoordinateTest {
-    Double halfPi=Math.PI/2;
+    Double halfPi = Math.PI / 2;
+
+    private class TestCoordinate extends AbstractCoordinate {
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void asCartesianCoordinateThrowsIllegalArgumentException() {
+        //Arrange
+        TestCoordinate testCoordinate = new TestCoordinate();
+        //Act
+        testCoordinate.asCartesianCoordinate();
+    }
 
     @Test
     public void getDistanceMustBe0() {
@@ -152,6 +167,16 @@ public class CartesianCoordinateTest {
         Assert.assertTrue(sphericCoordinate.getPhi() == 0);
     }
 
+    @Test
+    public void asSphericCoordinate2() {
+        double threshold = 0.0001;
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(3, 10, 17);
+        SphericCoordinate sphericCoordinate = cartesianCoordinate.asSphericCoordinate();
+        Assert.assertTrue(Math.abs(sphericCoordinate.getRadius() - 19.94993734326) < threshold);
+        Assert.assertTrue(Math.abs(sphericCoordinate.getTheta() - 0.55074859514) < threshold);
+        Assert.assertTrue(Math.abs(sphericCoordinate.getPhi() - 1.279339532317) < threshold);
+    }
+
 
     @Test(expected = NullPointerException.class)
     public void asSphericCoordinateException() {
@@ -173,24 +198,27 @@ public class CartesianCoordinateTest {
     @Test
     public void isEqual() {
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(2, 0, 0);
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(0,halfPi,2);
+        SphericCoordinate sphericCoordinate = new SphericCoordinate(0, halfPi, 2);
         Assert.assertTrue(cartesianCoordinate.equals(sphericCoordinate));
     }
+
     @Test
     public void equals() {
         Coordinate cartesianCoordinate = new CartesianCoordinate(2, 0, 0);
-        Coordinate sphericCoordinate = new SphericCoordinate(0,halfPi,2);
+        Coordinate sphericCoordinate = new SphericCoordinate(0, halfPi, 2);
         Assert.assertTrue(cartesianCoordinate.equals(sphericCoordinate));
     }
+
     @Test(expected = NullPointerException.class)
     public void getCartesianDistanceNull() {
         Coordinate cartesianCoordinate = new CartesianCoordinate(2, 0, 0);
         cartesianCoordinate.getCartesianDistance(null);
     }
+
     @Test
     public void isEqualNull() {
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(1,1,1);
-        Assert.assertEquals(false,cartesianCoordinate.isEqual(null));
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(1, 1, 1);
+        Assert.assertEquals(false, cartesianCoordinate.isEqual(null));
 
     }
 

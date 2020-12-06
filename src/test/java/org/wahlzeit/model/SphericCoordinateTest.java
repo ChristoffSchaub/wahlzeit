@@ -2,11 +2,23 @@ package org.wahlzeit.model;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
+import org.wahlzeit.model.coordinate.AbstractCoordinate;
+import org.wahlzeit.model.coordinate.CartesianCoordinate;
+import org.wahlzeit.model.coordinate.SphericCoordinate;
 
 public class SphericCoordinateTest {
     Double halfPi = Math.PI / 2;
+    private class TestCoordinate extends AbstractCoordinate {
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void asCartesianCoordinateThrowsIllegalArgumentException() {
+        //Arrange
+        TestCoordinate testCoordinate = new TestCoordinate();
+        //Act
+        testCoordinate.asCartesianCoordinate();
+    }
 
     @Test
     public void asCartesianCoordinate() {
@@ -37,6 +49,14 @@ public class SphericCoordinateTest {
         Assert.assertTrue(sphericCoordinate.getRadius() == 2);
         Assert.assertTrue(sphericCoordinate.getTheta() == halfPi);
         Assert.assertTrue(sphericCoordinate.getPhi() == 0);
+    }
+    @Test
+    public void SphericAsSphericCoordinate() {
+       SphericCoordinate sphericCoordinate = new SphericCoordinate(1,1,1);
+         sphericCoordinate = sphericCoordinate.asSphericCoordinate();
+        Assert.assertTrue(sphericCoordinate.getRadius() == 1);
+        Assert.assertTrue(sphericCoordinate.getTheta() == 1);
+        Assert.assertTrue(sphericCoordinate.getPhi() == 1);
     }
 
     @Test

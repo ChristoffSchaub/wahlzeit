@@ -3,6 +3,7 @@ package org.wahlzeit.model;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.model.coordinate.CartesianCoordinate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

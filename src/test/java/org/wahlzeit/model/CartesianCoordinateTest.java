@@ -14,6 +14,13 @@ public class CartesianCoordinateTest {
 
     }
 
+    @Test(expected = ArithmeticException.class)
+    public void asCartesianCoordinateThrowsArithmeticExceptionRadiusIsNull() {
+        //Arrange
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(0,0,0);
+        //Act
+        cartesianCoordinate.asSphericCoordinate();
+    }
     @Test(expected = IllegalArgumentException.class)
     public void asCartesianCoordinateThrowsIllegalArgumentException() {
         //Arrange

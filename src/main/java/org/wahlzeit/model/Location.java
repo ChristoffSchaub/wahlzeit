@@ -1,5 +1,9 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.model.coordinate.CartesianCoordinate;
+import org.wahlzeit.model.coordinate.Coordinate;
+import org.wahlzeit.model.coordinate.SphericCoordinate;
+
 public class Location {
 
     protected Coordinate coordinate;
@@ -11,6 +15,7 @@ public class Location {
             this.coordinate = cartesianCoordinate;
         }
     }
+
     public Location(SphericCoordinate sphericCoordinate) {
         if (sphericCoordinate == null) {
             throw new IllegalArgumentException("Coordinate must not be null");
@@ -59,6 +64,7 @@ public class Location {
             throw new IllegalArgumentException("locationAsString must be in Format x,y,z where x,y,z are doubles of coordinates");
         }
     }
+
     public static SphericCoordinate deserializeCoordinateFromLocationStringToSphericCoordinate(String locationAsString) {
         return deserializeCoordinateFromLocationString(locationAsString).asSphericCoordinate();
     }
@@ -66,6 +72,7 @@ public class Location {
     public CartesianCoordinate getCartesianCoordinate() {
         return coordinate.asCartesianCoordinate();
     }
+
     public SphericCoordinate getSphericCoorinate() {
         return coordinate.asSphericCoordinate();
     }
@@ -75,6 +82,7 @@ public class Location {
             throw new IllegalArgumentException("coordinate must not be null");
         this.coordinate = cartesianCoordinate;
     }
+
     public void setSphericCoordinate(SphericCoordinate sphericCoordinate) {
         if (sphericCoordinate == null)
             throw new IllegalArgumentException("coordinate must not be null");

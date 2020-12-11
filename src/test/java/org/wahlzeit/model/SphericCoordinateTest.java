@@ -8,17 +8,8 @@ import org.wahlzeit.model.coordinate.SphericCoordinate;
 
 public class SphericCoordinateTest {
     Double halfPi = Math.PI / 2;
-    private class TestCoordinate extends AbstractCoordinate {
 
-    }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void asCartesianCoordinateThrowsIllegalArgumentException() {
-        //Arrange
-        TestCoordinate testCoordinate = new TestCoordinate();
-        //Act
-        testCoordinate.asCartesianCoordinate();
-    }
 
     @Test
     public void asCartesianCoordinate() {

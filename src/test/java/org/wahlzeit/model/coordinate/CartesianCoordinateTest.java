@@ -1,4 +1,4 @@
-package org.wahlzeit.model;
+package org.wahlzeit.model.coordinate;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,7 +14,7 @@ public class CartesianCoordinateTest {
     @Test(expected = ArithmeticException.class)
     public void asCartesianCoordinateThrowsArithmeticExceptionRadiusIsNull() {
         //Arrange
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(0,0,0);
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(0, 0, 0);
         //Act
         cartesianCoordinate.asSphericCoordinate();
     }
@@ -213,11 +213,16 @@ public class CartesianCoordinateTest {
         cartesianCoordinate.getCartesianDistance(null);
     }
 
-    @Test
+    @Test(expected = NullPointerException.class)
     public void isEqualNull() {
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(1, 1, 1);
-        Assert.assertEquals(false, cartesianCoordinate.isEqual(null));
+        cartesianCoordinate.isEqual(null);
+    }
 
+    @Test(expected = AssertionError.class)
+    public void assertClassInvariantsFails() {
+        double nan = Double.NaN;
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(2, nan, 2);
     }
 
 }

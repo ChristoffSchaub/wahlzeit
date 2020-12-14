@@ -1,4 +1,4 @@
-package org.wahlzeit.model;
+package org.wahlzeit.model.coordinate;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,7 +8,6 @@ import org.wahlzeit.model.coordinate.SphericCoordinate;
 
 public class SphericCoordinateTest {
     Double halfPi = Math.PI / 2;
-
 
 
     @Test
@@ -41,10 +40,11 @@ public class SphericCoordinateTest {
         Assert.assertTrue(sphericCoordinate.getTheta() == halfPi);
         Assert.assertTrue(sphericCoordinate.getPhi() == 0);
     }
+
     @Test
     public void SphericAsSphericCoordinate() {
-       SphericCoordinate sphericCoordinate = new SphericCoordinate(1,1,1);
-         sphericCoordinate = sphericCoordinate.asSphericCoordinate();
+        SphericCoordinate sphericCoordinate = new SphericCoordinate(1, 1, 1);
+        sphericCoordinate = sphericCoordinate.asSphericCoordinate();
         Assert.assertTrue(sphericCoordinate.getRadius() == 1);
         Assert.assertTrue(sphericCoordinate.getTheta() == 1);
         Assert.assertTrue(sphericCoordinate.getPhi() == 1);
@@ -74,5 +74,15 @@ public class SphericCoordinateTest {
         SphericCoordinate sphericCoordinate = new SphericCoordinate(0, halfPi, 2);
         Assert.assertTrue(sphericCoordinate.equals(cartesianCoordinate));
     }
+
+    @Test(expected = AssertionError.class)
+    public void assertClassInvariantsFails() {
+        double nan = Double.NaN;
+        SphericCoordinate sphericCoordinate = new SphericCoordinate(nan, halfPi, 2);
+
+    }
+
+
+
 
 }

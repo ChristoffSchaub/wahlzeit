@@ -36,6 +36,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     @Override
     public SphericCoordinate asSphericCoordinate() {
+        assertClassInvariants();
         SphericCoordinate sphericCoordinate = doAsSphericCoordinate();
         CoordinateAsserter.assertValidNumber(sphericCoordinate.getRadius());
         CoordinateAsserter.assertValidNumber(sphericCoordinate.getPhi());

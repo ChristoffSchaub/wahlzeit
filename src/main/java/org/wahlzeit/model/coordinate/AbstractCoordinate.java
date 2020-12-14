@@ -19,7 +19,9 @@ public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public double getCentralAngle(Coordinate coordinate) {
         CoordinateAsserter.assertNotNull(coordinate);
-        return this.asSphericCoordinate().getCentralAngle(coordinate.asSphericCoordinate());
+        double result = this.asSphericCoordinate().getCentralAngle(coordinate.asSphericCoordinate());
+        CoordinateAsserter.assertValidNumber(result);
+        return result;
     }
 
 

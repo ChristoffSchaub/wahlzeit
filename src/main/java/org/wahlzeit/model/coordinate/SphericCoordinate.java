@@ -47,7 +47,7 @@ public class SphericCoordinate extends AbstractCoordinate {
         CoordinateAsserter.assertValidNumber(deltaTheta);
         CoordinateAsserter.assertValidNumber(preResult);
         double result = this.getRadius() * Math.acos(preResult);
-        CoordinateAsserter.assertValidNumber(result);
+
         return result;
     }
 

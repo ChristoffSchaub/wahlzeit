@@ -7,9 +7,13 @@ public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public double getCartesianDistance(Coordinate coordinate) throws NullPointerException {
         CoordinateAsserter.assertNotNull(coordinate);
-        return this.asCartesianCoordinate().getCartesianDistance(coordinate.asCartesianCoordinate());
+        double result = this.asCartesianCoordinate().getCartesianDistance(coordinate.asCartesianCoordinate());
+        CoordinateAsserter.assertValidNumber(result);
+        return result;
     }
+
     protected abstract CartesianCoordinate doAsCartesianCoordinate();
+
     protected abstract SphericCoordinate doAsSphericCoordinate();
 
     @Override
@@ -50,7 +54,7 @@ public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public int hashCode() {
         CartesianCoordinate toHash = this.asCartesianCoordinate();
-        return Objects.hash(toHash.getX(),toHash.getY(),toHash.getZ());
+        return Objects.hash(toHash.getX(), toHash.getY(), toHash.getZ());
     }
 
     protected abstract void assertClassInvariants();

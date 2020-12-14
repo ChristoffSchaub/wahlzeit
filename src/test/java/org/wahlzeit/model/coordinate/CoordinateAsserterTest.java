@@ -7,11 +7,11 @@ import static org.junit.Assert.*;
 public class CoordinateAsserterTest {
 
 
-
     @Test
     public void assertNotNullTrue() {
-        CoordinateAsserter.assertNotNull(new CartesianCoordinate(1,1,1));
+        CoordinateAsserter.assertNotNull(new CartesianCoordinate(1, 1, 1));
     }
+
     @Test(expected = NullPointerException.class)
     public void assertNotNullFails() {
         CoordinateAsserter.assertNotNull(null);
@@ -21,6 +21,7 @@ public class CoordinateAsserterTest {
     public void assertValidNumber() {
         CoordinateAsserter.assertValidNumber(1);
     }
+
     @Test(expected = ArithmeticException.class)
     public void assertValidNumberFails() {
         CoordinateAsserter.assertValidNumber(Double.NaN);
@@ -30,6 +31,7 @@ public class CoordinateAsserterTest {
     public void assertDivisionThroughNull() {
         CoordinateAsserter.assertDivisionThroughNull(1);
     }
+
     @Test(expected = ArithmeticException.class)
     public void assertDivisionThroughNullFails() {
         CoordinateAsserter.assertDivisionThroughNull(0);

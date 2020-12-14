@@ -1,7 +1,6 @@
 package org.wahlzeit.model.coordinate;
 
-public class SphericCoordinate extends AbstractCoordinate
-{
+public class SphericCoordinate extends AbstractCoordinate {
 
     private double phi;
     private double theta;
@@ -18,7 +17,7 @@ public class SphericCoordinate extends AbstractCoordinate
     @Override
     public SphericCoordinate asSphericCoordinate() {
         assertClassInvariants();
-        return  doAsSphericCoordinate();
+        return doAsSphericCoordinate();
     }
 
     /**

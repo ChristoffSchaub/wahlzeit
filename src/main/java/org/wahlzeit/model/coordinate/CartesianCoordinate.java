@@ -1,7 +1,7 @@
 package org.wahlzeit.model.coordinate;
 
 
-public class CartesianCoordinate extends AbstractCoordinate{
+public class CartesianCoordinate extends AbstractCoordinate {
 
     private double x;
     private double y;
@@ -45,10 +45,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
 
     public double getCartesianDistance(CartesianCoordinate coordinate) throws NullPointerException {
-        CoordinateAsserter.assertNotNull(coordinate);
-        double result = Math.sqrt(Math.pow(coordinate.getX() - this.getX(), 2) + Math.pow(coordinate.getY() - this.getY(), 2) + Math.pow(coordinate.getZ() - this.getZ(), 2));
-        CoordinateAsserter.assertValidNumber(result);
-        return result;
+        return Math.sqrt(Math.pow(coordinate.getX() - this.getX(), 2) + Math.pow(coordinate.getY() - this.getY(), 2) + Math.pow(coordinate.getZ() - this.getZ(), 2));
     }
 
     private static double getPhi(double x, double y, double z) {
@@ -65,7 +62,6 @@ public class CartesianCoordinate extends AbstractCoordinate{
         CoordinateAsserter.assertValidNumber(phi);
         return phi;
     }
-
 
 
     @Override

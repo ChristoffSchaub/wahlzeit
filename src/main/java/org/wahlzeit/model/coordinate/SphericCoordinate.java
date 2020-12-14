@@ -1,6 +1,7 @@
 package org.wahlzeit.model.coordinate;
 
-public class SphericCoordinate extends AbstractCoordinate {
+public class SphericCoordinate extends AbstractCoordinate
+{
 
     private double phi;
     private double theta;
@@ -10,12 +11,14 @@ public class SphericCoordinate extends AbstractCoordinate {
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
+        this.assertClassInvariants();
     }
 
 
     @Override
     public SphericCoordinate asSphericCoordinate() {
-        return this;
+        assertClassInvariants();
+        return  doAsSphericCoordinate();
     }
 
     /**
@@ -25,14 +28,11 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
-        if (this instanceof SphericCoordinate) {
-            SphericCoordinate sphericCoordinate = (SphericCoordinate) this;
-            double x = sphericCoordinate.getRadius() * Math.sin(sphericCoordinate.getTheta()) * Math.cos(sphericCoordinate.getPhi());
-            double y = sphericCoordinate.getRadius() * Math.sin(sphericCoordinate.getTheta()) * Math.sin(sphericCoordinate.getPhi());
-            double z = sphericCoordinate.getRadius() * Math.cos(sphericCoordinate.getTheta());
-            return new CartesianCoordinate(x, y, z);
-        }
-        throw new IllegalArgumentException("This must be an instance of Cartesian or SphericCoordinate. Because this Abstract class can only be called by its subclasses");
+        CartesianCoordinate cartesianCoordinate = doAsCartesianCoordinate();
+        CoordinateAsserter.assertValidNumber(cartesianCoordinate.getX());
+        CoordinateAsserter.assertValidNumber(cartesianCoordinate.getY());
+        CoordinateAsserter.assertValidNumber(cartesianCoordinate.getZ());
+        return cartesianCoordinate;
     }
 
 
@@ -43,11 +43,12 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @return
      */
     public double getCentralAngle(SphericCoordinate coordinate) {
-
         double deltaTheta = Math.abs(coordinate.getTheta() - this.getTheta());
         double preResult = (Math.sin(this.getPhi()) * Math.sin(coordinate.getPhi())) + (Math.cos(this.getPhi()) * Math.cos(coordinate.getPhi()) * Math.cos(deltaTheta));
+        CoordinateAsserter.assertValidNumber(deltaTheta);
+        CoordinateAsserter.assertValidNumber(preResult);
         double result = this.getRadius() * Math.acos(preResult);
-
+        CoordinateAsserter.assertValidNumber(result);
         return result;
     }
 
@@ -57,6 +58,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     public void setPhi(double phi) {
         this.phi = phi;
+        this.assertClassInvariants();
     }
 
     public double getTheta() {
@@ -65,6 +67,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     public void setTheta(double theta) {
         this.theta = theta;
+        this.assertClassInvariants();
     }
 
     public double getRadius() {
@@ -73,7 +76,26 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     public void setRadius(double radius) {
         this.radius = radius;
+        this.assertClassInvariants();
     }
 
 
+    @Override
+    protected CartesianCoordinate doAsCartesianCoordinate() {
+        double x = this.getRadius() * Math.sin(this.getTheta()) * Math.cos(this.getPhi());
+        double y = this.getRadius() * Math.sin(this.getTheta()) * Math.sin(this.getPhi());
+        double z = this.getRadius() * Math.cos(this.getTheta());
+
+        return new CartesianCoordinate(x, y, z);
+    }
+
+    @Override
+    protected SphericCoordinate doAsSphericCoordinate() {
+        return this;
+    }
+
+    @Override
+    public void assertClassInvariants() {
+        assert !Double.isNaN(this.getPhi()) && !Double.isNaN(this.getRadius()) && !Double.isNaN(this.getTheta());
+    }
 }

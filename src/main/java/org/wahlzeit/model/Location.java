@@ -9,7 +9,7 @@ public class Location {
 
     protected Coordinate coordinate;
 
-    public Location(CartesianCoordinate cartesianCoordinate) throws IllegalArgumentException{
+    public Location(CartesianCoordinate cartesianCoordinate) throws IllegalArgumentException, IllegalStateException{
         if (cartesianCoordinate == null) {
             throw new IllegalArgumentException("Coordinate must not be null");
         } else {
@@ -18,7 +18,7 @@ public class Location {
         }
     }
 
-    public Location(SphericCoordinate sphericCoordinate) throws IllegalArgumentException{
+    public Location(SphericCoordinate sphericCoordinate) throws IllegalArgumentException, IllegalStateException{
         if (sphericCoordinate == null) {
             throw new IllegalArgumentException("Coordinate must not be null");
         } else {

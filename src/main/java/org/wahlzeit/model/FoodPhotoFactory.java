@@ -29,6 +29,7 @@ public class FoodPhotoFactory extends PhotoFactory {
         }
         catch (Exception e){
             logger.warning("FoodPhoto could not be created. "+e.toString());
+            throw e;
         }
 
         return foodPhoto;
@@ -46,6 +47,7 @@ public class FoodPhotoFactory extends PhotoFactory {
         }
         catch (Exception e){
             logger.warning("FoodPhoto could not be created. "+e.toString());
+            throw e;
         }
 
         return foodPhoto;
@@ -63,6 +65,7 @@ public class FoodPhotoFactory extends PhotoFactory {
         }
         catch (Exception e){
             logger.warning("FoodPhoto could not be created. "+e.toString());
+            throw e;
         }
 
         return foodPhoto;

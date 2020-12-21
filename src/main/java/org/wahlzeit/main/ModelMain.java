@@ -23,6 +23,7 @@ package org.wahlzeit.main;
 import java.io.File;
 import java.io.FileFilter;
 import java.sql.*;
+import java.util.logging.Logger;
 
 import org.wahlzeit.model.*;
 import org.wahlzeit.services.*;
@@ -32,7 +33,9 @@ import org.wahlzeit.servlets.AbstractServlet;
  * A single-threaded Main class with database connection. Can be used by tools that don't want to start a server.
  */
 public abstract class ModelMain extends AbstractMain {
-	
+
+	private static final Logger logger= Logger.getLogger(ModelMain.class.getName());
+
 	/**
 	 * 
 	 */
@@ -45,8 +48,13 @@ public abstract class ModelMain extends AbstractMain {
 		}
 		
  		loadGlobals();
-
-		PhotoFactory.initialize();
+		try {
+			PhotoFactory.initialize();
+		}
+		catch (Exception e){
+			logger.warning("PhotoFactory could not be instantiated"+e.toString());
+			throw new InstantiationException("PhotoFactory could not be instantiated");
+		}
 	}
 	
 	/**

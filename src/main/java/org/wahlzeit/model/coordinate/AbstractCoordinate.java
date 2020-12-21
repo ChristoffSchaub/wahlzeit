@@ -5,7 +5,7 @@ import java.util.Objects;
 public abstract class AbstractCoordinate implements Coordinate {
 
     @Override
-    public double getCartesianDistance(Coordinate coordinate) throws NullPointerException {
+    public double getCartesianDistance(Coordinate coordinate) throws NullPointerException, ArithmeticException {
         CoordinateAsserter.assertNotNull(coordinate);
         double result = this.asCartesianCoordinate().getCartesianDistance(coordinate.asCartesianCoordinate());
         CoordinateAsserter.assertValidNumber(result);
@@ -17,7 +17,23 @@ public abstract class AbstractCoordinate implements Coordinate {
     protected abstract SphericCoordinate doAsSphericCoordinate();
 
     @Override
-    public double getCentralAngle(Coordinate coordinate) {
+    public SphericCoordinate asSphericCoordinate() {
+         assertClassInvariants();
+         SphericCoordinate sphericCoordinate = doAsSphericCoordinate();
+         assertClassInvariants();
+         return sphericCoordinate;
+    }
+
+    @Override
+    public CartesianCoordinate asCartesianCoordinate() {
+        assertClassInvariants();
+        CartesianCoordinate cartesianCoordinate =  doAsCartesianCoordinate();
+        assertClassInvariants();
+        return cartesianCoordinate;
+    }
+
+    @Override
+    public double getCentralAngle(Coordinate coordinate) throws NullPointerException, ArithmeticException{
         CoordinateAsserter.assertNotNull(coordinate);
         double result = this.asSphericCoordinate().getCentralAngle(coordinate.asSphericCoordinate());
         CoordinateAsserter.assertValidNumber(result);
@@ -26,7 +42,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 
 
     @Override
-    public boolean isEqual(Coordinate coordinate) {
+    public boolean isEqual(Coordinate coordinate) throws NullPointerException{
         CoordinateAsserter.assertNotNull(coordinate);
         double threshold = 0.000001;
         CartesianCoordinate cartesianCoordinate = coordinate.asCartesianCoordinate();

@@ -75,7 +75,7 @@ public class SphericCoordinateTest {
         Assert.assertTrue(sphericCoordinate.equals(cartesianCoordinate));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = IllegalStateException.class)
     public void assertClassInvariantsFails() {
         double nan = Double.NaN;
         SphericCoordinate sphericCoordinate = new SphericCoordinate(nan, halfPi, 2);

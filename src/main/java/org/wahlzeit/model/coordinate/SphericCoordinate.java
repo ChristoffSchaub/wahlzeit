@@ -14,25 +14,9 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
 
-    @Override
-    public SphericCoordinate asSphericCoordinate() {
-        assertClassInvariants();
-        return doAsSphericCoordinate();
-    }
 
-    /**
-     * Reference https://de.wikipedia.org/wiki/Kugelkoordinaten
-     *
-     * @return
-     */
-    @Override
-    public CartesianCoordinate asCartesianCoordinate() {
-        CartesianCoordinate cartesianCoordinate = doAsCartesianCoordinate();
-        CoordinateAsserter.assertValidNumber(cartesianCoordinate.getX());
-        CoordinateAsserter.assertValidNumber(cartesianCoordinate.getY());
-        CoordinateAsserter.assertValidNumber(cartesianCoordinate.getZ());
-        return cartesianCoordinate;
-    }
+
+
 
 
     /**
@@ -41,7 +25,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @param coordinate
      * @return
      */
-    public double getCentralAngle(SphericCoordinate coordinate) {
+    public double getCentralAngle(SphericCoordinate coordinate) throws ArithmeticException{
         double deltaTheta = Math.abs(coordinate.getTheta() - this.getTheta());
         double preResult = (Math.sin(this.getPhi()) * Math.sin(coordinate.getPhi())) + (Math.cos(this.getPhi()) * Math.cos(coordinate.getPhi()) * Math.cos(deltaTheta));
         CoordinateAsserter.assertValidNumber(deltaTheta);
@@ -94,7 +78,16 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    public void assertClassInvariants() {
-        assert !Double.isNaN(this.getPhi()) && !Double.isNaN(this.getRadius()) && !Double.isNaN(this.getTheta());
+    public void assertClassInvariants() throws IllegalStateException{
+        if(!(0<=this.theta&&this.theta<=Math.PI)){
+            throw new IllegalStateException("Theta must be between 0 and Pi");
+        }
+        if(!(0<=this.getPhi()&&this.getPhi()<=2*Math.PI)||!((-1*Math.PI<=this.getPhi()&&this.getPhi()<=Math.PI))){
+            throw new IllegalStateException("Phi must be between 0 and 2 Pi oder zwischen -Pi und Pi");
+        }
+        if(this.getRadius()<0)
+            throw new IllegalStateException("Radius must not be negative");
+        if( Double.isNaN(this.getPhi()) || Double.isNaN(this.getTheta()) || Double.isNaN(this.getRadius()))
+            throw new IllegalStateException("X,Y,Z must not be NaN");
     }
 }

@@ -4,8 +4,11 @@ import org.wahlzeit.services.SysLog;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class FoodPhotoFactory extends PhotoFactory {
+
+    private static final Logger logger = Logger.getLogger(FoodPhotoFactory.class.getName());
 
     /**
      *
@@ -19,7 +22,16 @@ public class FoodPhotoFactory extends PhotoFactory {
      */
     @Override
     public FoodPhoto createPhoto() {
-        return new FoodPhoto();
+        FoodPhoto foodPhoto = null;
+        try
+        {
+            foodPhoto = new FoodPhoto();
+        }
+        catch (Exception e){
+            logger.warning("FoodPhoto could not be created. "+e.toString());
+        }
+
+        return foodPhoto;
     }
 
     /**
@@ -27,7 +39,16 @@ public class FoodPhotoFactory extends PhotoFactory {
      */
     @Override
     public FoodPhoto createPhoto(PhotoId id) {
-        return new FoodPhoto(id);
+        FoodPhoto foodPhoto = null;
+        try
+        {
+            foodPhoto = new FoodPhoto(id);
+        }
+        catch (Exception e){
+            logger.warning("FoodPhoto could not be created. "+e.toString());
+        }
+
+        return foodPhoto;
     }
 
     /**
@@ -35,7 +56,16 @@ public class FoodPhotoFactory extends PhotoFactory {
      */
     @Override
     public FoodPhoto createPhoto(ResultSet rs) throws SQLException {
-        return new FoodPhoto(rs);
+        FoodPhoto foodPhoto = null;
+        try
+        {
+            foodPhoto = new FoodPhoto(rs);
+        }
+        catch (Exception e){
+            logger.warning("FoodPhoto could not be created. "+e.toString());
+        }
+
+        return foodPhoto;
     }
 
 

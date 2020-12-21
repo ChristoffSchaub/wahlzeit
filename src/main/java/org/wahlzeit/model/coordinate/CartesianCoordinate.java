@@ -20,7 +20,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     @Override
-    protected SphericCoordinate doAsSphericCoordinate() {
+    protected SphericCoordinate doAsSphericCoordinate() throws ArithmeticException {
         double radius = Math.sqrt(Math.pow(this.getX(), 2) + Math.pow(this.getY(), 2) + Math.pow(this.getZ(), 2));
         CoordinateAsserter.assertDivisionThroughNull(radius);
         double theta = Math.acos(this.getZ() / radius);
@@ -28,28 +28,14 @@ public class CartesianCoordinate extends AbstractCoordinate {
         return new SphericCoordinate(phi, theta, radius);
     }
 
-    @Override
-    public CartesianCoordinate asCartesianCoordinate() {
-        assertClassInvariants();
-        return doAsCartesianCoordinate();
-    }
-
-    @Override
-    public SphericCoordinate asSphericCoordinate() {
-        assertClassInvariants();
-        SphericCoordinate sphericCoordinate = doAsSphericCoordinate();
-        CoordinateAsserter.assertValidNumber(sphericCoordinate.getRadius());
-        CoordinateAsserter.assertValidNumber(sphericCoordinate.getPhi());
-        CoordinateAsserter.assertValidNumber(sphericCoordinate.getTheta());
-        return sphericCoordinate;
-    }
 
 
     public double getCartesianDistance(CartesianCoordinate coordinate) throws NullPointerException {
+        CoordinateAsserter.assertNotNull(coordinate);
         return Math.sqrt(Math.pow(coordinate.getX() - this.getX(), 2) + Math.pow(coordinate.getY() - this.getY(), 2) + Math.pow(coordinate.getZ() - this.getZ(), 2));
     }
 
-    private static double getPhi(double x, double y, double z) {
+    private static double getPhi(double x, double y, double z) throws ArithmeticException{
         double phi = 0;
         if (x > 0) {
             phi = Math.atan(y / x);
@@ -66,8 +52,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
 
     @Override
-    public void assertClassInvariants() {
-        assert !Double.isNaN(this.getX()) && !Double.isNaN(this.getY()) && !Double.isNaN(this.getZ());
+    public void assertClassInvariants() throws IllegalStateException{
+        if( Double.isNaN(this.getX()) || Double.isNaN(this.getY()) || Double.isNaN(this.getZ()))
+            throw new IllegalStateException("X,Y,Z must not be NaN");
     }
 
 

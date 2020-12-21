@@ -140,7 +140,7 @@ public class CartesianCoordinateTest {
     @Test
     public void asCartesianCoordinateWithSphericCoordinate() {
         //Arrange
-        Coordinate sphericCoordinate = new SphericCoordinate(4, 6, 1);
+        Coordinate sphericCoordinate = new SphericCoordinate(0.4, 0.6, 0.1);
         //Act
         sphericCoordinate = sphericCoordinate.asCartesianCoordinate();
         //Assert
@@ -150,7 +150,7 @@ public class CartesianCoordinateTest {
     @Test
     public void asCartesianCoordinateWithSphericCoordinateFails() {
         //Arrange
-        Coordinate sphericCoordinate = new SphericCoordinate(4, 6, 1);
+        Coordinate sphericCoordinate = new SphericCoordinate(0.2,0.6, 1);
         //Assert
         Assert.assertFalse(sphericCoordinate instanceof CartesianCoordinate);
     }
@@ -219,7 +219,7 @@ public class CartesianCoordinateTest {
         cartesianCoordinate.isEqual(null);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = IllegalStateException.class)
     public void assertClassInvariantsFails() {
         double nan = Double.NaN;
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(2, nan, 2);

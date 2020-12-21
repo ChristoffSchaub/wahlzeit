@@ -2,30 +2,34 @@ package org.wahlzeit.model;
 
 import org.wahlzeit.model.coordinate.CartesianCoordinate;
 import org.wahlzeit.model.coordinate.Coordinate;
+import org.wahlzeit.model.coordinate.CoordinateAsserter;
 import org.wahlzeit.model.coordinate.SphericCoordinate;
 
 public class Location {
 
     protected Coordinate coordinate;
 
-    public Location(CartesianCoordinate cartesianCoordinate) {
+    public Location(CartesianCoordinate cartesianCoordinate) throws IllegalArgumentException{
         if (cartesianCoordinate == null) {
             throw new IllegalArgumentException("Coordinate must not be null");
         } else {
             this.coordinate = cartesianCoordinate;
+            this.assertClassInvariants();
         }
     }
 
-    public Location(SphericCoordinate sphericCoordinate) {
+    public Location(SphericCoordinate sphericCoordinate) throws IllegalArgumentException{
         if (sphericCoordinate == null) {
             throw new IllegalArgumentException("Coordinate must not be null");
         } else {
             this.coordinate = sphericCoordinate;
+            this.assertClassInvariants();
         }
     }
 
     public Location(String locationAsString) {
         this.coordinate = deserializeCoordinateFromLocationString(locationAsString);
+        this.assertClassInvariants();
     }
 
     public static String serializeAsString(Location l) {
@@ -40,7 +44,7 @@ public class Location {
         return x + "," + y + "," + z;
     }
 
-    public static CartesianCoordinate deserializeCoordinateFromLocationString(String locationAsString) {
+    public static CartesianCoordinate deserializeCoordinateFromLocationString(String locationAsString) throws IllegalArgumentException {
         //String is serialized with the scheme of the Method serializeAsString()
         if (locationAsString == null)
             throw new IllegalArgumentException("locationAsString must not be null");
@@ -65,7 +69,7 @@ public class Location {
         }
     }
 
-    public static SphericCoordinate deserializeCoordinateFromLocationStringToSphericCoordinate(String locationAsString) {
+    public static SphericCoordinate deserializeCoordinateFromLocationStringToSphericCoordinate(String locationAsString) throws IllegalArgumentException{
         return deserializeCoordinateFromLocationString(locationAsString).asSphericCoordinate();
     }
 
@@ -77,15 +81,18 @@ public class Location {
         return coordinate.asSphericCoordinate();
     }
 
-    public void setCartesianCoordinate(CartesianCoordinate cartesianCoordinate) {
-        if (cartesianCoordinate == null)
-            throw new IllegalArgumentException("coordinate must not be null");
+    public void setCartesianCoordinate(CartesianCoordinate cartesianCoordinate) throws IllegalArgumentException{
+        CoordinateAsserter.assertNotNull(cartesianCoordinate);
         this.coordinate = cartesianCoordinate;
     }
 
-    public void setSphericCoordinate(SphericCoordinate sphericCoordinate) {
-        if (sphericCoordinate == null)
-            throw new IllegalArgumentException("coordinate must not be null");
+    public void setSphericCoordinate(SphericCoordinate sphericCoordinate) throws IllegalArgumentException{
+        CoordinateAsserter.assertNotNull(sphericCoordinate);
         this.coordinate = sphericCoordinate;
+    }
+
+    public void assertClassInvariants() throws IllegalStateException{
+        if( this.coordinate == null)
+            throw new IllegalStateException("coordinate must not be Null");
     }
 }

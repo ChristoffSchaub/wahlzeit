@@ -21,6 +21,7 @@
 package org.wahlzeit.model;
 
 import java.sql.*;
+import java.util.logging.Logger;
 
 import org.wahlzeit.services.*;
 
@@ -33,6 +34,7 @@ public class PhotoFactory {
      * Hidden singleton instance; needs to be initialized from the outside.
      */
     private static PhotoFactory instance = null;
+    private static final Logger logger=Logger.getLogger(PhotoFactory.class.getName());
 
     /**
      * Public singleton access method.
@@ -40,7 +42,13 @@ public class PhotoFactory {
     public static synchronized PhotoFactory getInstance() {
         if (instance == null) {
             SysLog.logSysInfo("setting generic PhotoFactory");
-            setInstance(new FoodPhotoFactory());
+            try{
+                setInstance(new FoodPhotoFactory());
+            }
+            catch (Exception e){
+                logger.severe("settingInstance of FoodPhotFactory went ront \n"+e.getMessage());
+                throw e;
+            }
         }
 
         return instance;
@@ -49,7 +57,7 @@ public class PhotoFactory {
     /**
      * Method to set the singleton instance of PhotoFactory.
      */
-    protected static synchronized void setInstance(PhotoFactory photoFactory) {
+    protected static synchronized void setInstance(PhotoFactory photoFactory) throws IllegalStateException{
         if (instance != null) {
             throw new IllegalStateException("attempt to initialize PhotoFactory twice");
         }
@@ -75,21 +83,45 @@ public class PhotoFactory {
      * @methodtype factory
      */
     public Photo createPhoto() {
-        return new Photo();
+        Photo photo=null;
+        try {
+            photo = new Photo();
+        }
+        catch (Exception e){
+            logger.severe("settingInstance of FoodPhotFactory went ront \n"+e.getMessage());
+            throw e;
+        }
+        return photo;
     }
 
     /**
      *
      */
     public Photo createPhoto(PhotoId id) {
-        return new Photo(id);
+        Photo photo=null;
+        try {
+            photo = new Photo(id);
+        }
+        catch (Exception e){
+            logger.severe("settingInstance of FoodPhotFactory went ront \n"+e.getMessage());
+            throw e;
+        }
+        return photo;
     }
 
     /**
      *
      */
     public Photo createPhoto(ResultSet rs) throws SQLException {
-        return new Photo(rs);
+        Photo photo=null;
+        try {
+            photo = new Photo(rs);
+        }
+        catch (Exception e){
+            logger.severe("settingInstance of FoodPhotFactory went ront \n"+e.getMessage());
+            throw e;
+        }
+        return photo;
     }
 
     /**

@@ -1,12 +1,7 @@
 package org.wahlzeit.model;
 
-import org.wahlzeit.services.EmailAddress;
-import org.wahlzeit.services.Language;
-import org.wahlzeit.utils.StringUtil;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class FoodPhoto extends Photo {
 
@@ -15,16 +10,19 @@ public class FoodPhoto extends Photo {
      */
     protected int calories = 800;
 
-    public FoodPhoto(PhotoId id) {
+    public FoodPhoto(PhotoId id) throws IllegalStateException{
         super(id);
+        assertClassInvariants();
     }
 
     public FoodPhoto(ResultSet rs) throws SQLException {
         super(rs);
+        assertClassInvariants();
     }
 
-    public FoodPhoto() {
+    public FoodPhoto() throws IllegalStateException{
         super();
+        assertClassInvariants();
     }
 
     /**
@@ -50,9 +48,10 @@ public class FoodPhoto extends Photo {
      *
      */
     @Override
-    public void readFrom(ResultSet rset) throws SQLException {
+    public void readFrom(ResultSet rset) throws SQLException,IllegalStateException {
         super.readFrom(rset);
         calories = rset.getInt("calories");
+        assertClassInvariants();
     }
 
 
@@ -62,5 +61,12 @@ public class FoodPhoto extends Photo {
 
     public void setCalories(int calories) {
         this.calories = calories;
+        assertClassInvariants();
+    }
+
+
+    public void assertClassInvariants() throws IllegalStateException{
+        if( this.calories<0)
+            throw new IllegalStateException("Calories must be greater than zero");
     }
 }

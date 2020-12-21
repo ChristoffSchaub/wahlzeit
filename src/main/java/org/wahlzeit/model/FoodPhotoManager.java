@@ -1,26 +1,31 @@
 package org.wahlzeit.model;
 
-import org.wahlzeit.main.ServiceMain;
-import org.wahlzeit.services.Persistent;
 import org.wahlzeit.services.SysLog;
-
 import java.io.File;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FoodPhotoManager extends PhotoManager {
 
+    Logger logger = Logger.getLogger(FoodPhotoManager.class.getName());
 
     public FoodPhotoManager() {
-        photoTagCollector = FoodPhotoFactory.getInstance().createPhotoTagCollector();
+            photoTagCollector = FoodPhotoFactory.getInstance().createPhotoTagCollector();
     }
 
     @Override
     public Photo createPhoto(File file) throws Exception {
         PhotoId id = PhotoId.getNextId();
-        FoodPhoto result = (FoodPhoto) PhotoUtil.createPhoto(file, id);
+        FoodPhoto result = null;
+        try {
+            result = (FoodPhoto) PhotoUtil.createPhoto(file, id);
+        }
+        catch (Exception e ){
+            logger.log(Level.SEVERE,"could not create Foodphoto from File \n"+e.getMessage());
+            throw e;
+        }
         addPhoto(result);
         return result;
     }
@@ -28,7 +33,15 @@ public class FoodPhotoManager extends PhotoManager {
     @Override
     protected Photo getPhotoFromFilter(PhotoFilter filter) {
         PhotoId id = filter.getRandomDisplayablePhotoId();
-        FoodPhoto result = getPhotoFromId(id);
+        FoodPhoto result =null;
+        try {
+            result= getPhotoFromId(id);
+        }
+        catch (Exception e)
+        {
+            logger.severe("Couldnt get photo from filter "+ id.stringValue + "with Exception: "+e.toString());
+            throw e;
+        }
         while ((result != null) && !result.isVisible()) {
             id = filter.getRandomDisplayablePhotoId();
             result = getPhotoFromId(id);
@@ -46,8 +59,16 @@ public class FoodPhotoManager extends PhotoManager {
             return null;
         }
 
-        FoodPhoto result = doGetPhotoFromId(id);
+        FoodPhoto result =null;
 
+        try {
+            result= doGetPhotoFromId(id);
+        }
+        catch (Exception e)
+        {
+            logger.severe("Couldnt get photo from id "+ id.stringValue + "with Exception: "+e.toString());
+            throw e;
+        }
         if (result == null) {
             try {
                 PreparedStatement stmt = getReadingStatement("SELECT * FROM photos WHERE id = ?");

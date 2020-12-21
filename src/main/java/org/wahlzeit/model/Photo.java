@@ -118,10 +118,12 @@ public class Photo extends DataObject {
         incWriteCount();
     }
 
+
     /**
      * @methodtype constructor
      */
-    public Photo(PhotoId myId) {
+    public Photo(PhotoId myId) throws IllegalArgumentException{
+        checkForNull(myId, "myId must not be null");
         id = myId;
 
         incWriteCount();
@@ -130,7 +132,8 @@ public class Photo extends DataObject {
     /**
      * @methodtype constructor
      */
-    public Photo(ResultSet rset) throws SQLException {
+    public Photo(ResultSet rset) throws SQLException,IllegalArgumentException {
+        checkForNull(rset, "rset must not be null");
         readFrom(rset);
     }
 
@@ -144,7 +147,9 @@ public class Photo extends DataObject {
     /**
      *
      */
-    public void readFrom(ResultSet rset) throws SQLException {
+    public void readFrom(ResultSet rset) throws SQLException,IllegalArgumentException {
+        checkForNull(rset, "rset must not be null");
+
         id = PhotoId.getIdFromInt(rset.getInt("id"));
 
         ownerId = rset.getInt("owner_id");
@@ -174,7 +179,8 @@ public class Photo extends DataObject {
     /**
      *
      */
-    public void writeOn(ResultSet rset) throws SQLException {
+    public void writeOn(ResultSet rset) throws SQLException , IllegalArgumentException{
+        checkForNull(rset, "rset must not be null");
         rset.updateInt("id", id.asInt());
         rset.updateInt("owner_id", ownerId);
         rset.updateString("owner_name", ownerName);
@@ -195,7 +201,9 @@ public class Photo extends DataObject {
     /**
      *
      */
-    public void writeId(PreparedStatement stmt, int pos) throws SQLException {
+    public void writeId(PreparedStatement stmt, int pos) throws SQLException, IllegalArgumentException {
+        checkForNull(stmt, "stmt must not be null");
+        checkForNull(pos, "pos must not be null");
         stmt.setInt(pos, id.asInt());
     }
 
@@ -216,7 +224,8 @@ public class Photo extends DataObject {
     /**
      * @methodtype set
      */
-    public void setOwnerId(int newId) {
+    public void setOwnerId(int newId) throws IllegalArgumentException {
+        checkForNull(newId, "newId must not be null");
         ownerId = newId;
         incWriteCount();
     }
@@ -231,7 +240,8 @@ public class Photo extends DataObject {
     /**
      * @methodtype set
      */
-    public void setOwnerName(String newName) {
+    public void setOwnerName(String newName) throws IllegalArgumentException {
+        checkForNull(newName, "newName must not be null");
         ownerName = newName;
         incWriteCount();
     }
@@ -260,7 +270,7 @@ public class Photo extends DataObject {
     /**
      * @methodtype set
      */
-    public void setOwnerNotifyAboutPraise(boolean newNotifyAboutPraise) {
+    public void setOwnerNotifyAboutPraise(boolean newNotifyAboutPraise) throws IllegalArgumentException {
         ownerNotifyAboutPraise = newNotifyAboutPraise;
         incWriteCount();
     }
@@ -275,7 +285,8 @@ public class Photo extends DataObject {
     /**
      * @methodtype set
      */
-    public void setOwnerEmailAddress(EmailAddress newEmailAddress) {
+    public void setOwnerEmailAddress(EmailAddress newEmailAddress) throws IllegalArgumentException {
+        checkForNull(newEmailAddress, "newEmailAddress must not be null");
         ownerEmailAddress = newEmailAddress;
         incWriteCount();
     }
@@ -290,7 +301,8 @@ public class Photo extends DataObject {
     /**
      *
      */
-    public void setOwnerLanguage(Language newLanguage) {
+    public void setOwnerLanguage(Language newLanguage) throws IllegalArgumentException {
+        checkForNull(newLanguage, "newLanguage must not be null");
         ownerLanguage = newLanguage;
         incWriteCount();
     }
@@ -305,7 +317,8 @@ public class Photo extends DataObject {
     /**
      * @methodtype set
      */
-    public void setOwnerHomePage(URL newHomePage) {
+    public void setOwnerHomePage(URL newHomePage) throws IllegalArgumentException {
+        checkForNull(newHomePage, "newHomePage must not be null");
         ownerHomePage = newHomePage;
         incWriteCount();
     }
@@ -355,7 +368,9 @@ public class Photo extends DataObject {
     /**
      * @methodtype set
      */
-    public void setWidthAndHeight(int newWidth, int newHeight) {
+    public void setWidthAndHeight(int newWidth, int newHeight) throws IllegalArgumentException {
+        checkForNull(newWidth, "newWidth must not be null");
+        checkForNull(newHeight, "newHeight must not be null");
         width = newWidth;
         height = newHeight;
 
@@ -397,7 +412,8 @@ public class Photo extends DataObject {
     /**
      *
      */
-    public void addToPraise(int value) {
+    public void addToPraise(int value) throws IllegalArgumentException {
+        checkForNull(value, "value must not be null");
         praiseSum += value;
         noVotes += 1;
         incWriteCount();
@@ -420,7 +436,8 @@ public class Photo extends DataObject {
     /**
      * @methodtype set
      */
-    public void setStatus(PhotoStatus newStatus) {
+    public void setStatus(PhotoStatus newStatus) throws IllegalArgumentException {
+        checkForNull(newStatus, "newStatus must not be null");
         status = newStatus;
         incWriteCount();
     }
@@ -442,7 +459,8 @@ public class Photo extends DataObject {
     /**
      * @methodtype set
      */
-    public void setTags(Tags newTags) {
+    public void setTags(Tags newTags) throws IllegalArgumentException {
+        checkForNull(newTags, "newTags must not be null");
         tags = newTags;
         incWriteCount();
     }
@@ -458,8 +476,16 @@ public class Photo extends DataObject {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(Location location) throws IllegalArgumentException {
+        checkForNull(location, "newEmailAddress must not be null");
         this.location = location;
         incWriteCount();
     }
+
+    public void checkForNull(Object object, String message) throws IllegalArgumentException {
+        if (object == null)
+            throw new IllegalArgumentException(message);
+    }
+
+
 }

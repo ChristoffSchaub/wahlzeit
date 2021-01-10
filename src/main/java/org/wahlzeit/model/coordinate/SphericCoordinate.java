@@ -1,25 +1,36 @@
 package org.wahlzeit.model.coordinate;
 
+import java.util.Objects;
+
 public class SphericCoordinate extends AbstractCoordinate {
 
-    private double phi;
-    private double theta;
-    private double radius;
+    private final double phi;
+    private final double theta;
+    private final double radius;
 
-    public SphericCoordinate(double phi, double theta, double radius) {
+    private SphericCoordinate(double phi, double theta, double radius) {
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
         this.assertClassInvariants();
     }
 
+    public static SphericCoordinate getSphericCoordinate(double phi, double theta, double radius){
+        SphericCoordinate sphericCoordinate = new SphericCoordinate(phi,theta,radius);
+        SphericCoordinate result = existingSphericCoordinates.get(sphericCoordinate.hashCode());
+        if (result == null) {
+            synchronized (existingSphericCoordinates) {
+                result = existingSphericCoordinates.get(sphericCoordinate.hashCode());
+                if (result == null) {
+                    result = sphericCoordinate;
+                    existingSphericCoordinates.put(sphericCoordinate.hashCode(), result);
+                }
+            }
+        }
+        return result;
+    }
 
-
-
-
-
-
-    /**
+   /**
      * Reference https://en.wikipedia.org/wiki/Central_angle
      *
      * @param coordinate
@@ -31,7 +42,6 @@ public class SphericCoordinate extends AbstractCoordinate {
         CoordinateAsserter.assertValidNumber(deltaTheta);
         CoordinateAsserter.assertValidNumber(preResult);
         double result = this.getRadius() * Math.acos(preResult);
-
         return result;
     }
 
@@ -39,27 +49,30 @@ public class SphericCoordinate extends AbstractCoordinate {
         return phi;
     }
 
-    public void setPhi(double phi) {
-        this.phi = phi;
+    public SphericCoordinate setPhi(double phi) {
+        SphericCoordinate coordinate = SphericCoordinate.getSphericCoordinate(phi,this.theta,this.radius);
         this.assertClassInvariants();
+        return coordinate;
     }
 
     public double getTheta() {
         return theta;
     }
 
-    public void setTheta(double theta) {
-        this.theta = theta;
-        this.assertClassInvariants();
+    public SphericCoordinate setTheta(double theta) {
+        SphericCoordinate coordinate = SphericCoordinate.getSphericCoordinate(this.phi,theta,this.radius);
+        assertClassInvariants();
+        return coordinate;
     }
 
     public double getRadius() {
         return radius;
     }
 
-    public void setRadius(double radius) {
-        this.radius = radius;
+    public SphericCoordinate setRadius(double radius) {
+        SphericCoordinate coordinate=new SphericCoordinate(this.phi,this.theta,radius);
         this.assertClassInvariants();
+        return coordinate;
     }
 
 
@@ -69,7 +82,7 @@ public class SphericCoordinate extends AbstractCoordinate {
         double y = this.getRadius() * Math.sin(this.getTheta()) * Math.sin(this.getPhi());
         double z = this.getRadius() * Math.cos(this.getTheta());
 
-        return new CartesianCoordinate(x, y, z);
+        return CartesianCoordinate.getCartesianCoordinate(x,y,z);
     }
 
     @Override
@@ -90,4 +103,10 @@ public class SphericCoordinate extends AbstractCoordinate {
         if( Double.isNaN(this.getPhi()) || Double.isNaN(this.getTheta()) || Double.isNaN(this.getRadius()))
             throw new IllegalStateException("X,Y,Z must not be NaN");
     }
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getPhi(), this.getTheta(), this.getRadius());
+    }
+
+
 }

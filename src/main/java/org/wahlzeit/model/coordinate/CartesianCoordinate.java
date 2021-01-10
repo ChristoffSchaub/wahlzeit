@@ -1,17 +1,34 @@
 package org.wahlzeit.model.coordinate;
 
 
+import java.util.Objects;
+
 public class CartesianCoordinate extends AbstractCoordinate {
 
-    private double x;
-    private double y;
-    private double z;
+    private final double x;
+    private final double y;
+    private final double z;
 
-    public CartesianCoordinate(double x, double y, double z) {
+    private CartesianCoordinate(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
         assertClassInvariants();
+    }
+
+    public static CartesianCoordinate getCartesianCoordinate(double x, double y, double z){
+        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(x,y,z);
+        CartesianCoordinate result = existingCartesianCoordinates.get(cartesianCoordinate.hashCode());
+        if (result == null) {
+            synchronized (existingCartesianCoordinates) {
+                result = existingCartesianCoordinates.get(cartesianCoordinate.hashCode());
+                if (result == null) {
+                    result = cartesianCoordinate;
+                    existingCartesianCoordinates.put(cartesianCoordinate.hashCode(), result);
+                }
+            }
+        }
+        return result;
     }
 
     @Override
@@ -25,7 +42,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
         CoordinateAsserter.assertDivisionThroughNull(radius);
         double theta = Math.acos(this.getZ() / radius);
         double phi = getPhi(this.getX(), this.getY(), this.getZ());
-        return new SphericCoordinate(phi, theta, radius);
+        return SphericCoordinate.getSphericCoordinate(phi,theta,radius);
     }
 
 
@@ -62,26 +79,34 @@ public class CartesianCoordinate extends AbstractCoordinate {
         return x;
     }
 
-    public void setX(double x) {
-        this.x = x;
+    public CartesianCoordinate setX(double x) {
+        CartesianCoordinate coordinate = CartesianCoordinate.getCartesianCoordinate(x,this.getY(),this.getZ());
         assertClassInvariants();
+        return coordinate;
     }
 
     public double getY() {
         return y;
     }
 
-    public void setY(double y) {
-        this.y = y;
+    public CartesianCoordinate setY(double y) {
+        CartesianCoordinate coordinate = CartesianCoordinate.getCartesianCoordinate(this.getX(),y,this.getZ());
         assertClassInvariants();
+        return coordinate;
     }
 
     public double getZ() {
         return z;
     }
 
-    public void setZ(double z) {
-        this.z = z;
+    public CartesianCoordinate setZ(double z) {
+        CartesianCoordinate coordinate = CartesianCoordinate.getCartesianCoordinate(this.getX(),this.getY(),z);
         assertClassInvariants();
+        return coordinate;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getX(), this.getY(), this.getZ());
     }
 }

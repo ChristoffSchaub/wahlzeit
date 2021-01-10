@@ -63,7 +63,7 @@ public class Location {
             x = Double.parseDouble(coordinates[0]);
             y = Double.parseDouble(coordinates[1]);
             z = Double.parseDouble(coordinates[2]);
-            return new CartesianCoordinate(x, y, z);
+            return CartesianCoordinate.getCartesianCoordinate(x,y,z);
         } catch (NumberFormatException exception) {
             throw new IllegalArgumentException("locationAsString must be in Format x,y,z where x,y,z are doubles of coordinates");
         }

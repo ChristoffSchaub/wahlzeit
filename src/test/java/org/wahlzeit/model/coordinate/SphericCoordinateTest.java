@@ -15,7 +15,7 @@ public class SphericCoordinateTest {
         //Arrange
         double threshold = 0.0001;
         CartesianCoordinate cartesianCoordinate;
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(0, halfPi, 2);
+        SphericCoordinate sphericCoordinate = SphericCoordinate.getSphericCoordinate(0, halfPi, 2);
         //Act
         cartesianCoordinate = sphericCoordinate.asCartesianCoordinate();
         //Assert
@@ -26,15 +26,15 @@ public class SphericCoordinateTest {
 
     @Test
     public void getCartesianDistanceShouldBeNull() {
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(0, halfPi, 2);
-        SphericCoordinate sphericCoordinate2 = new SphericCoordinate(0, halfPi, 2);
+        SphericCoordinate sphericCoordinate = SphericCoordinate.getSphericCoordinate(0, halfPi, 2);
+        SphericCoordinate sphericCoordinate2 = SphericCoordinate.getSphericCoordinate(0, halfPi, 2);
         double distance = sphericCoordinate.getCartesianDistance(sphericCoordinate2);
         Assert.assertEquals(0.0, distance, 0.000000001);
     }
 
     @Test
     public void asSphericCoordinate() {
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(2, 0, 0);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinate(2, 0, 0);
         SphericCoordinate sphericCoordinate = cartesianCoordinate.asSphericCoordinate();
         Assert.assertTrue(sphericCoordinate.getRadius() == 2);
         Assert.assertTrue(sphericCoordinate.getTheta() == halfPi);
@@ -43,7 +43,7 @@ public class SphericCoordinateTest {
 
     @Test
     public void SphericAsSphericCoordinate() {
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(1, 1, 1);
+        SphericCoordinate sphericCoordinate = SphericCoordinate.getSphericCoordinate(1, 1, 1);
         sphericCoordinate = sphericCoordinate.asSphericCoordinate();
         Assert.assertTrue(sphericCoordinate.getRadius() == 1);
         Assert.assertTrue(sphericCoordinate.getTheta() == 1);
@@ -53,8 +53,8 @@ public class SphericCoordinateTest {
     @Test
     public void getCentralAngle() {
         //Arrange
-        SphericCoordinate sphericCoordinate1 = new SphericCoordinate(0, halfPi, 1);
-        SphericCoordinate sphericCoordinate2 = new SphericCoordinate(halfPi, halfPi, 1);
+        SphericCoordinate sphericCoordinate1 = SphericCoordinate.getSphericCoordinate(0, halfPi, 1);
+        SphericCoordinate sphericCoordinate2 = SphericCoordinate.getSphericCoordinate(halfPi, halfPi, 1);
         //Act
         double centralAngle = sphericCoordinate2.getCentralAngle(sphericCoordinate1);
         //Assert
@@ -63,22 +63,22 @@ public class SphericCoordinateTest {
 
     @Test
     public void isEqual() {
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(2, 0, 0);
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(0, halfPi, 2);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinate(2, 0, 0);
+        SphericCoordinate sphericCoordinate = SphericCoordinate.getSphericCoordinate(0, halfPi, 2);
         Assert.assertTrue(cartesianCoordinate.equals(sphericCoordinate));
     }
 
     @Test
     public void equals() {
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(2, 0, 0);
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(0, halfPi, 2);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinate(2, 0, 0);
+        SphericCoordinate sphericCoordinate = SphericCoordinate.getSphericCoordinate(0, halfPi, 2);
         Assert.assertTrue(sphericCoordinate.equals(cartesianCoordinate));
     }
 
     @Test(expected = IllegalStateException.class)
     public void assertClassInvariantsFails() {
         double nan = Double.NaN;
-        SphericCoordinate sphericCoordinate = new SphericCoordinate(nan, halfPi, 2);
+        SphericCoordinate sphericCoordinate = SphericCoordinate.getSphericCoordinate(nan, halfPi, 2);
 
     }
 

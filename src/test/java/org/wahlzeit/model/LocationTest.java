@@ -10,7 +10,7 @@ public class LocationTest {
     @Test
     public void serializeAsString() {
         //Arrange
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(100.0, 200.0, 300.0);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinate(100.0, 200.0, 300.0);
         Location location = new Location(cartesianCoordinate);
         String expectedValue = "100.0,200.0,300.0";
         //Act
@@ -34,7 +34,7 @@ public class LocationTest {
     public void deserializeCoordinateFromLocationString() {
         //Arrange
         String locationString = "100.0,200.0,300.0";
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(100.0, 200.0, 300.0);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getCartesianCoordinate(100.0, 200.0, 300.0);
         //Act
         CartesianCoordinate actualCartesianCoordinate = Location.deserializeCoordinateFromLocationString(locationString);
         //Assert
@@ -85,7 +85,7 @@ public class LocationTest {
     @Test
     public void createLocationWithSphericCoordinate() {
         //Arrange
-        Location sphericLocation = new Location(new SphericCoordinate(1,1,1));
+        Location sphericLocation = new Location(SphericCoordinate.getSphericCoordinate(1,1,1));
 
     }
 

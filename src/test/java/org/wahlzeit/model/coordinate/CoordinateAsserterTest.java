@@ -9,7 +9,7 @@ public class CoordinateAsserterTest {
 
     @Test
     public void assertNotNullTrue() {
-        CoordinateAsserter.assertNotNull(new CartesianCoordinate(1, 1, 1));
+        CoordinateAsserter.assertNotNull(CartesianCoordinate.getCartesianCoordinate(1, 1, 1));
     }
 
     @Test(expected = NullPointerException.class)

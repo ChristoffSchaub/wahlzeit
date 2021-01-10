@@ -1,20 +1,17 @@
 package org.wahlzeit.model.coordinate;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public abstract class AbstractCoordinate implements Coordinate {
 
-    @Override
-    public double getCartesianDistance(Coordinate coordinate) throws NullPointerException, ArithmeticException {
-        CoordinateAsserter.assertNotNull(coordinate);
-        double result = this.asCartesianCoordinate().getCartesianDistance(coordinate.asCartesianCoordinate());
-        CoordinateAsserter.assertValidNumber(result);
-        return result;
-    }
-
     protected abstract CartesianCoordinate doAsCartesianCoordinate();
 
     protected abstract SphericCoordinate doAsSphericCoordinate();
+
+    public final static Map<Integer,CartesianCoordinate> existingCartesianCoordinates = new HashMap<>();
+    public final static Map<Integer,SphericCoordinate> existingSphericCoordinates = new HashMap<>();
 
     @Override
     public SphericCoordinate asSphericCoordinate() {
@@ -30,6 +27,14 @@ public abstract class AbstractCoordinate implements Coordinate {
         CartesianCoordinate cartesianCoordinate =  doAsCartesianCoordinate();
         assertClassInvariants();
         return cartesianCoordinate;
+    }
+
+    @Override
+    public double getCartesianDistance(Coordinate coordinate) throws NullPointerException, ArithmeticException {
+        CoordinateAsserter.assertNotNull(coordinate);
+        double result = this.asCartesianCoordinate().getCartesianDistance(coordinate.asCartesianCoordinate());
+        CoordinateAsserter.assertValidNumber(result);
+        return result;
     }
 
     @Override
@@ -68,12 +73,11 @@ public abstract class AbstractCoordinate implements Coordinate {
         return this.isEqual((Coordinate) o);
     }
 
-
     @Override
-    public int hashCode() {
-        CartesianCoordinate toHash = this.asCartesianCoordinate();
-        return Objects.hash(toHash.getX(), toHash.getY(), toHash.getZ());
+    protected Object clone() {
+        return this;
     }
+
 
     protected abstract void assertClassInvariants();
 

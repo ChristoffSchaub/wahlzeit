@@ -1,5 +1,6 @@
 package org.wahlzeit.model;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.SysLog;
 import java.io.File;
 import java.sql.PreparedStatement;
@@ -7,6 +8,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@PatternInstance(patternName = "Singleton", participants = {"PhotoManager", "FoodPhotoManager"})
 public class FoodPhotoManager extends PhotoManager {
 
     Logger logger = Logger.getLogger(FoodPhotoManager.class.getName());

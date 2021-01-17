@@ -23,12 +23,14 @@ package org.wahlzeit.model;
 import java.sql.*;
 import java.net.*;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
 
 /**
  * A photo represents a user-provided (uploaded) photo.
  */
+@PatternInstance(patternName = "Abstract Factory", participants = {"Photo", "FoodPhoto"})
 public class Photo extends DataObject {
 
     /**

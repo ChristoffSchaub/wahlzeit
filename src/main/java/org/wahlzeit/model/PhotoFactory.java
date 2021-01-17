@@ -23,18 +23,25 @@ package org.wahlzeit.model;
 import java.sql.*;
 import java.util.logging.Logger;
 
+import org.wahlzeit.annotations.PatternInstance;
 import org.wahlzeit.services.*;
 
 /**
  * An Abstract Factory for creating photos and related objects.
  */
+@PatternInstance(
+        patternName = "Abstract Factory",
+        participants = {
+                "PhotoFactory", "FoodPhotoFactory"
+        }
+)
 public class PhotoFactory {
 
     /**
      * Hidden singleton instance; needs to be initialized from the outside.
      */
     private static PhotoFactory instance = null;
-    private static final Logger logger=Logger.getLogger(PhotoFactory.class.getName());
+    private static final Logger logger = Logger.getLogger(PhotoFactory.class.getName());
 
     /**
      * Public singleton access method.
@@ -42,11 +49,10 @@ public class PhotoFactory {
     public static synchronized PhotoFactory getInstance() {
         if (instance == null) {
             SysLog.logSysInfo("setting generic PhotoFactory");
-            try{
+            try {
                 setInstance(new FoodPhotoFactory());
-            }
-            catch (Exception e){
-                logger.severe("settingInstance of FoodPhotFactory went ront \n"+e.getMessage());
+            } catch (Exception e) {
+                logger.severe("settingInstance of FoodPhotFactory went ront \n" + e.getMessage());
                 throw e;
             }
         }
@@ -57,7 +63,7 @@ public class PhotoFactory {
     /**
      * Method to set the singleton instance of PhotoFactory.
      */
-    protected static synchronized void setInstance(PhotoFactory photoFactory) throws IllegalStateException{
+    protected static synchronized void setInstance(PhotoFactory photoFactory) throws IllegalStateException {
         if (instance != null) {
             throw new IllegalStateException("attempt to initialize PhotoFactory twice");
         }
@@ -83,12 +89,11 @@ public class PhotoFactory {
      * @methodtype factory
      */
     public Photo createPhoto() {
-        Photo photo=null;
+        Photo photo = null;
         try {
             photo = new Photo();
-        }
-        catch (Exception e){
-            logger.severe("settingInstance of FoodPhotFactory went ront \n"+e.getMessage());
+        } catch (Exception e) {
+            logger.severe("settingInstance of FoodPhotFactory went ront \n" + e.getMessage());
             throw e;
         }
         return photo;
@@ -98,12 +103,11 @@ public class PhotoFactory {
      *
      */
     public Photo createPhoto(PhotoId id) {
-        Photo photo=null;
+        Photo photo = null;
         try {
             photo = new Photo(id);
-        }
-        catch (Exception e){
-            logger.severe("settingInstance of FoodPhotFactory went ront \n"+e.getMessage());
+        } catch (Exception e) {
+            logger.severe("settingInstance of FoodPhotFactory went ront \n" + e.getMessage());
             throw e;
         }
         return photo;
@@ -113,12 +117,11 @@ public class PhotoFactory {
      *
      */
     public Photo createPhoto(ResultSet rs) throws SQLException {
-        Photo photo=null;
+        Photo photo = null;
         try {
             photo = new Photo(rs);
-        }
-        catch (Exception e){
-            logger.severe("settingInstance of FoodPhotFactory went ront \n"+e.getMessage());
+        } catch (Exception e) {
+            logger.severe("settingInstance of FoodPhotFactory went ront \n" + e.getMessage());
             throw e;
         }
         return photo;

@@ -14,7 +14,7 @@ public class FoodPhotoManager extends PhotoManager {
     Logger logger = Logger.getLogger(FoodPhotoManager.class.getName());
 
     public FoodPhotoManager() {
-            photoTagCollector = FoodPhotoFactory.getInstance().createPhotoTagCollector();
+        photoTagCollector = FoodPhotoFactory.getInstance().createPhotoTagCollector();
     }
 
     @Override
@@ -23,9 +23,8 @@ public class FoodPhotoManager extends PhotoManager {
         FoodPhoto result = null;
         try {
             result = (FoodPhoto) PhotoUtil.createPhoto(file, id);
-        }
-        catch (Exception e ){
-            logger.log(Level.SEVERE,"could not create Foodphoto from File \n"+e.getMessage());
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "could not create Foodphoto from File \n" + e.getMessage());
             throw e;
         }
         addPhoto(result);
@@ -35,13 +34,11 @@ public class FoodPhotoManager extends PhotoManager {
     @Override
     protected Photo getPhotoFromFilter(PhotoFilter filter) {
         PhotoId id = filter.getRandomDisplayablePhotoId();
-        FoodPhoto result =null;
+        FoodPhoto result = null;
         try {
-            result= getPhotoFromId(id);
-        }
-        catch (Exception e)
-        {
-            logger.severe("Couldnt get photo from filter "+ id.stringValue + "with Exception: "+e.toString());
+            result = getPhotoFromId(id);
+        } catch (Exception e) {
+            logger.severe("Couldnt get photo from filter " + id.stringValue + "with Exception: " + e.toString());
             throw e;
         }
         while ((result != null) && !result.isVisible()) {
@@ -61,14 +58,12 @@ public class FoodPhotoManager extends PhotoManager {
             return null;
         }
 
-        FoodPhoto result =null;
+        FoodPhoto result = null;
 
         try {
-            result= doGetPhotoFromId(id);
-        }
-        catch (Exception e)
-        {
-            logger.severe("Couldnt get photo from id "+ id.stringValue + "with Exception: "+e.toString());
+            result = doGetPhotoFromId(id);
+        } catch (Exception e) {
+            logger.severe("Couldnt get photo from id " + id.stringValue + "with Exception: " + e.toString());
             throw e;
         }
         if (result == null) {

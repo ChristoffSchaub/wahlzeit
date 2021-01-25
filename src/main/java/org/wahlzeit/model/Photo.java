@@ -24,6 +24,7 @@ import java.sql.*;
 import java.net.*;
 
 import org.wahlzeit.annotations.PatternInstance;
+import org.wahlzeit.model.coordinate.CartesianCoordinate;
 import org.wahlzeit.services.*;
 import org.wahlzeit.utils.*;
 
@@ -63,6 +64,12 @@ public class Photo extends DataObject {
      *
      */
     protected PhotoId id = null;
+
+
+    /**
+     * DefaultLocation
+     */
+    public Location defaultLocation = new Location(CartesianCoordinate.getCartesianCoordinate(1, 4, 5));
 
     /**
      *
@@ -124,7 +131,7 @@ public class Photo extends DataObject {
     /**
      * @methodtype constructor
      */
-    public Photo(PhotoId myId) throws IllegalArgumentException{
+    public Photo(PhotoId myId) throws IllegalArgumentException {
         checkForNull(myId, "myId must not be null");
         id = myId;
 
@@ -134,7 +141,7 @@ public class Photo extends DataObject {
     /**
      * @methodtype constructor
      */
-    public Photo(ResultSet rset) throws SQLException,IllegalArgumentException {
+    public Photo(ResultSet rset) throws SQLException, IllegalArgumentException {
         checkForNull(rset, "rset must not be null");
         readFrom(rset);
     }
@@ -149,7 +156,7 @@ public class Photo extends DataObject {
     /**
      *
      */
-    public void readFrom(ResultSet rset) throws SQLException,IllegalArgumentException {
+    public void readFrom(ResultSet rset) throws SQLException, IllegalArgumentException {
         checkForNull(rset, "rset must not be null");
 
         id = PhotoId.getIdFromInt(rset.getInt("id"));
@@ -175,13 +182,13 @@ public class Photo extends DataObject {
 
         maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
 
-        location = new Location(rset.getString("location"));
+        defaultLocation = new Location(rset.getString("location"));
     }
 
     /**
      *
      */
-    public void writeOn(ResultSet rset) throws SQLException , IllegalArgumentException{
+    public void writeOn(ResultSet rset) throws SQLException, IllegalArgumentException {
         checkForNull(rset, "rset must not be null");
         rset.updateInt("id", id.asInt());
         rset.updateInt("owner_id", ownerId);
@@ -197,7 +204,7 @@ public class Photo extends DataObject {
         rset.updateInt("praise_sum", praiseSum);
         rset.updateInt("no_votes", noVotes);
         rset.updateLong("creation_time", creationTime);
-        rset.updateString("location", Location.serializeAsString(location));
+        rset.updateString("location", Location.serializeAsString(defaultLocation));
     }
 
     /**
@@ -474,13 +481,13 @@ public class Photo extends DataObject {
         return creationTime;
     }
 
-    public Location getLocation() {
-        return location;
+    public Location getDefaultLocation() {
+        return defaultLocation;
     }
 
-    public void setLocation(Location location) throws IllegalArgumentException {
-        checkForNull(location, "newEmailAddress must not be null");
-        this.location = location;
+    public void setDefaultLocation(Location defaultLocation) throws IllegalArgumentException {
+        checkForNull(defaultLocation, "newEmailAddress must not be null");
+        this.defaultLocation = defaultLocation;
         incWriteCount();
     }
 

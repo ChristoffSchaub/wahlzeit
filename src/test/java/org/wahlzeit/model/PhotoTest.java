@@ -23,7 +23,7 @@ public class PhotoTest {
         //Act
         photo.readFrom(resultSet);
         //Assert
-        Assert.assertTrue(photo.location.getCartesianCoordinate().equals(CartesianCoordinate.getCartesianCoordinate(1.0, 2.0, 3.0)));
+        Assert.assertTrue(photo.defaultLocation.getCartesianCoordinate().equals(CartesianCoordinate.getCartesianCoordinate(1.0, 2.0, 3.0)));
 
 
     }

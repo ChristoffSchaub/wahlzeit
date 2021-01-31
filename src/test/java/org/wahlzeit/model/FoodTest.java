@@ -26,7 +26,10 @@ public class FoodTest {
         Assert.assertTrue(food.equals(food2));
     }
     @Test
-    public void testEqualsFalse() {
+    public void foodManagerTest() {
+        FoodType foodType = new FoodType("BigMac");
+        FoodManager foodManager = FoodManager.getInstance();
+        foodManager.createFood("BigMac",1800);
     }
 
     @Test

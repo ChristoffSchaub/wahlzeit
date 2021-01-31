@@ -11,7 +11,7 @@ public class FoodPhotoTest {
     @Test
     public void foodPhotoCreation() throws Exception {
         PhotoManager photoManager = FoodPhotoManager.getInstance();
-        Photo foodPhoto = photoManager.createPhoto(new File("C:\\Users\\Christoff\\Desktop"));
+ //       Photo foodPhoto = photoManager.createPhoto(new File("C:\\Users\\Christoff\\Desktop"));
 
     }
 

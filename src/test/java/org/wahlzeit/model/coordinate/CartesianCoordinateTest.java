@@ -10,6 +10,7 @@ import org.wahlzeit.model.coordinate.SphericCoordinate;
 import static org.wahlzeit.model.coordinate.AbstractCoordinate.existingCartesianCoordinates;
 
 public class CartesianCoordinateTest {
+    //BUILD COMMIT PUSH AND TAG TASK CW12
     Double halfPi = Math.PI / 2;
 
 
